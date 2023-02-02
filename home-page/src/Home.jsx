@@ -20,7 +20,7 @@ const Home = () => {
       >
         TurnOn
       </button>
-      <br/>
+      <br />
       <Link to="/text">Text</Link>
     </>
   );
