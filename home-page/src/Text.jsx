@@ -13,6 +13,8 @@ const Text = () => {
       </Suspense>
       <br />
       <Link to="/">Home</Link>
+      <br />
+      <Link to="/blank">Blank</Link>
     </>
   );
 };

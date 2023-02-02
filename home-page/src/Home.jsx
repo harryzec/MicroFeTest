@@ -22,6 +22,8 @@ const Home = () => {
       </button>
       <br />
       <Link to="/text">Text</Link>
+      <br />
+      <Link to="/blank">Blank</Link>
     </>
   );
 }
