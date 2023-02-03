@@ -34,7 +34,6 @@ const TODO = () => {
   const [todoCache, setTodoCache] = useState(giveMeMyTodos());
   const [todo, setTodo] = useState('');
   const [persist, setPersist] = useState(false);
-  const [remoteState, setRemoteState] = useState(false)
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -66,10 +65,6 @@ const TODO = () => {
       <br />
       {persist && <div>"My React State is Also Being Persisted"</div>}
       <button onClick={() => setPersist(!persist)}>React State</button>
-      {remoteState && <Suspense fallback="waiting">{stateComponent()}</Suspense>}
-      <button onClick={() => setRemoteState(!remoteState)}>
-        Show me my remote state!
-      </button>
     </>
   );
 }

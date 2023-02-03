@@ -22,10 +22,9 @@ const State = () => {
     setProfile(apollo.getProfile());
   }
 
-  useEffect( async () => {
+  useEffect(async () => {
     resetState();
   }, []);
-
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -48,7 +47,6 @@ const State = () => {
           FirstName:
           <input
             onChange={(e) => {
-              console.log(e.target.value, updatedProfile);
               setUpdatedProfile({
                 ...updatedProfile,
                 firstName: e.target.value,
