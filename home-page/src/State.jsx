@@ -82,7 +82,7 @@ const State = () => {
       <br />
       <Link to="/">Home</Link>
       <br />
-      <Link to="/text">Text</Link>
+      <Link to="/todo">Todo</Link>
     </>
   );
 }

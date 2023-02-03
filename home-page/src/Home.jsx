@@ -21,7 +21,7 @@ const Home = () => {
         TurnOn
       </button>
       <br />
-      <Link to="/text">Text</Link>
+      <Link to="/todo">Todo</Link>
       <br />
       <Link to="/state">State</Link>
     </>

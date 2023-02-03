@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./index.css";
 import Home from './home';
-import Text from './Text';
+import Todo from './Todo';
 import State from './State';
 
 const initializeState = async () => {
@@ -19,7 +19,7 @@ const App = () => {
       <Router>
         <Routes>
           <Route exact path="/" element={<Home />}></Route>
-          <Route exact path="/text" element={<Text />}></Route>
+          <Route exact path="/todo" element={<Todo />}></Route>
           <Route exact path="/state" element={<State />}></Route>
         </Routes>
       </Router>
