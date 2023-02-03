@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
   gql,
 } from "@apollo/client";
-import { CButton } from '@coreui/react'
+import { CButton, CInput } from '@coreui/react'
 
 const client = new ApolloClient({
   uri: "https://localhost:4000/",
@@ -14,41 +14,62 @@ const client = new ApolloClient({
 
 const query = gql`
   query MyTodoAppQuery {
-    text
+    todos {
+      text
+    }
   }
 `;
 
-const giveMeMyText = () => client.readQuery({ query })?.text;
-const myNewTodo = "My Text Has Been Cached!!";
+const giveMeMyTodos = () => client.readQuery({ query })?.todos;
+
+const initializeState = async () => {
+  const csrf = await import("state/csrf");
+  const apollo = await import("state/apollo");
+  console.log('my remote csrf token and profile:', apollo.getProfile(), csrf.getCSRFToken())
+  return { csrf, apollo };
+};
 
 const TODO = () => {
-  const [text, setText] = useState(giveMeMyText());
-  const [persist, setPersist] = useState(false)
+  initializeState();
+  const [todoCache, setTodoCache] = useState(giveMeMyTodos());
+  const [todo, setTodo] = useState('');
+  const [persist, setPersist] = useState(false);
+  const [remoteState, setRemoteState] = useState(false)
 
-  const createTodo = async () => {
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const updateTodo = {
+      text: todo
+    }
+
     await client.writeQuery({
       query,
-        data: {
-          text: myNewTodo,
-        },
-    })
-    setText(giveMeMyText());
-  };
+      data: {
+        todos: [...(todoCache || []), updateTodo],
+      },
+    });
+    setTodoCache(giveMeMyTodos());
+    return;
+  }
 
   return (
     <>
-      {text}
-      {persist && "My React State is Also Being Persisted"}
-      <CButton color="primary" onClick={createTodo} shape="rounded-pill">
-        Add Text
-      </CButton>
-      <CButton
-        color="secondary"
-        onClick={() => setPersist(!persist)}
-        shape="rounded-pill"
-      >
-        React State
-      </CButton>
+      {(todoCache || []).map(({ text }) => (
+        <div>{text}</div>
+      ))}
+      <form onSubmit={onSubmit}>
+        <div>
+          <input onChange={(e) => setTodo(e.target.value)} />
+        </div>
+        <button type="submit">Submit Todo</button>
+      </form>
+      <br />
+      {persist && <div>"My React State is Also Being Persisted"</div>}
+      <button onClick={() => setPersist(!persist)}>React State</button>
+      {remoteState && <Suspense fallback="waiting">{stateComponent()}</Suspense>}
+      <button onClick={() => setRemoteState(!remoteState)}>
+        Show me my remote state!
+      </button>
     </>
   );
 }

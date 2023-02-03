@@ -45,6 +45,9 @@ module.exports = {
       exposes: {
         "./text": "./src/Text.jsx",
       },
+      remotes: {
+        state: "state@http://localhost:3001/remoteEntry.js",
+      },
       shared: {
         react: {
           singleton: true,

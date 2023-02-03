@@ -1,10 +1,10 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
-const deps = require("./package.json").dependencies;
 
+const deps = require("./package.json").dependencies;
 module.exports = {
   output: {
-    publicPath: "http://localhost:3000/",
+    publicPath: "http://localhost:3001/",
   },
 
   resolve: {
@@ -12,12 +12,7 @@ module.exports = {
   },
 
   devServer: {
-    port: 3000,
-    historyApiFallback: true,
-  },
-
-  experiments: {
-    topLevelAwait: true,
+    port: 3001,
   },
 
   module: {
@@ -45,11 +40,11 @@ module.exports = {
 
   plugins: [
     new ModuleFederationPlugin({
-      name: "mainapp",
+      name: "state",
       filename: "remoteEntry.js",
-      remotes: {
-        remoteapp: "remoteapp@http://localhost:8080/remoteEntry.js",
-        state: "state@http://localhost:3001/remoteEntry.js",
+      exposes: {
+        "./apollo": "./src/apollo.jsx",
+        "./csrf": "./src/csrf.jsx"
       },
       shared: {
         react: {
